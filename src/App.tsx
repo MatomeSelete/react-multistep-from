@@ -1,34 +1,51 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useMultistepForm } from "./useMultisteForm"
+
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+  const { steps, currentSteperIndex, step, isFirstStep, back, next } = useMultistepForm([
+  <div>0ne</div>, 
+  <div>Two</div>,
+])
+
+  return( <div style={{
+
+        position: "relative",
+        border: "1px solid black",
+        backgroundColor: "white",
+        padding: "2rem",
+        margin: "1rem",
+        borderRadius: ".5rem",
+        fontFamily: "Arial",
+      }}
+      >
+        <form>
+          <div style={{
+              position: "absolute",
+              top: ".5rem",
+              right: ".5rem",
+
+          }}
+          >
+          {currentSteperIndex +  1} / {steps.length}
+         
+          </div>
+          {step}
+          <div style={{
+            marginTop: "1rem",
+            display: "flex",
+            gap: ".5rem",
+            justifyContent: "flex-end",
+          }}
+          >
+            { isFirstStep && <button onClick={back}> Back </button> }
+            <button onClick={next} > Next </button> 
+
+          </div>
+        </form>
+
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
   )
 }
 
