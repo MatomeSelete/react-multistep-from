@@ -4,7 +4,19 @@ import { AddressFrom } from "./AddressForm"
 import { useMultistepForm } from "./useMultisteForm"
 import { UserForm } from "./userFomr"
 
-const INITIAL_DATA = {
+type FormData = {
+  firstName: string,
+  lastName: string,
+  age: string,
+  stree: string,
+  city: string,
+  state: string,
+  zip: string,
+  email: string,
+  password: string,
+}
+
+const INITIAL_DATA: FormData = {
   firstName: "",
   lastName: "",
   age: "",
@@ -18,66 +30,76 @@ const INITIAL_DATA = {
 
 
 function App() {
- const [data, setData] = useState(INITIAL_DATA)
+  const [data, setData] = useState(INITIAL_DATA)
 
-  const { 
-    steps, currentSteperIndex, step, isFirstStep, back, next, isLastStep 
-  } = useMultistepForm([<UserForm />, <AddressFrom />, <AccountForm />, ])
-
-  function onSubmit(e: FormEvent) {
-    e.preventDefault() 
-    next()
+  function updateFields(fields: Partial<FormData>) {
+    setData((prev) => {
+      return { ...prev, ...fields }
+    })
   }
 
-  return( <div style={{
+  const {
+    steps, currentSteperIndex, step, isFirstStep, back, next, isLastStep
+  } = useMultistepForm([<UserForm {...data} updateFields={updateFields} />,
+  <AddressFrom {...data} updateFields={updateFields} />,
+  <AccountForm {...data} updateFields={updateFields} />,
+  ])
 
-        position: "relative",
-        border: "1px solid black",
-        backgroundColor: "white",
-        padding: "2rem",
-        margin: "1rem",
-        borderRadius: ".5rem",
-        fontFamily: "Arial",
+  function onSubmit(e: FormEvent) {
+    e.preventDefault()
+    if (!isLastStep) return next() 
+    alert("Successful account Creation")
+  }
+
+  return (<div style={{
+
+    position: "relative",
+    border: "1px solid black",
+    backgroundColor: "white",
+    padding: "2rem",
+    margin: "1rem",
+    borderRadius: ".5rem",
+    fontFamily: "Arial",
+  }}
+  >
+    <form onSubmit={onSubmit} >
+      <div style={{
+        position: "absolute",
+        top: ".5rem",
+        right: ".5rem",
+
       }}
       >
-        <form onSubmit={onSubmit} >
-          <div style={{
-              position: "absolute",
-              top: ".5rem",
-              right: ".5rem",
-
-          }}
-          >
-          {currentSteperIndex +  1} / {steps.length}
-         
-          </div>
-          {step}
-          <div style={{
-            marginTop: "1rem",
-            display: "flex",
-            gap: ".5rem",
-            justifyContent: "flex-end",
-          }}
-          >
-            { isFirstStep && (
-            <button type="button" onClick={back}>
-               Back 
-            </button> 
-            )}
-
-            <button type="submit"> 
-            { isLastStep ? "Finish" : "Next" }
-            </button> 
-
-          </div>
-        </form>
+        {currentSteperIndex + 1} / {steps.length}
 
       </div>
+      {step}
+      <div style={{
+        marginTop: "1rem",
+        display: "flex",
+        gap: ".5rem",
+        justifyContent: "flex-end",
+      }}
+      >
+        {isFirstStep && (
+          <button type="button" onClick={back}>
+            Back
+          </button>
+        )}
+
+        <button type="submit">
+          {isLastStep ? "Finish" : "Next"}
+        </button>
+
+      </div>
+    </form>
+
+  </div>
   )
 }
 
 export default App
-function useState(INITIAL_DATA: any): [any, any] {
+function useState(INITIAL_DATA: FormData): [any, any] {
   throw new Error("Function not implemented.")
 }
 
