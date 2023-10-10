@@ -8,7 +8,7 @@ type FormData = {
   firstName: string,
   lastName: string,
   age: string,
-  stree: string,
+  street: string,
   city: string,
   state: string,
   zip: string,
@@ -20,7 +20,7 @@ const INITIAL_DATA: FormData = {
   firstName: "",
   lastName: "",
   age: "",
-  stree: "",
+  street: "",
   city: "",
   state: "",
   zip: "",
@@ -42,7 +42,7 @@ function App() {
     steps, currentSteperIndex, step, isFirstStep, back, next, isLastStep} = 
     useMultistepForm([
     <UserForm {...data} updateFields={updateFields} />,
-    <AddressFrom street={""} {...data} updateFields={updateFields} />,
+    <AddressFrom {...data} updateFields={updateFields} />,
     <AccountForm {...data} updateFields={updateFields} />,
   ])
 
