@@ -22,6 +22,7 @@ export function AddressFrom( {street, city, state, zip, updateFields,}:AddressFo
         value={street} 
         onChange={e => updateFields({street: e.target.value})} 
         />
+        
         <label> City </label>
         <input  
         required 

@@ -1,4 +1,4 @@
-import { FormEvent } from "react"
+import { FormEvent, useState } from "react"
 import { AccountForm } from "./AccountForm"
 import { AddressFrom } from "./AddressForm"
 import { useMultistepForm } from "./useMultisteForm"
@@ -33,22 +33,24 @@ function App() {
   const [data, setData] = useState(INITIAL_DATA)
 
   function updateFields(fields: Partial<FormData>) {
-    setData((prev) => {
+    setData(prev  => {
       return { ...prev, ...fields }
     })
   }
 
   const {
-    steps, currentSteperIndex, step, isFirstStep, back, next, isLastStep
-  } = useMultistepForm([<UserForm {...data} updateFields={updateFields} />,
-  <AddressFrom {...data} updateFields={updateFields} />,
-  <AccountForm {...data} updateFields={updateFields} />,
+    steps, currentSteperIndex, step, isFirstStep, back, next, isLastStep} = 
+    useMultistepForm([
+    <UserForm {...data} updateFields={updateFields} />,
+    <AddressFrom street={""} {...data} updateFields={updateFields} />,
+    <AccountForm {...data} updateFields={updateFields} />,
   ])
 
   function onSubmit(e: FormEvent) {
     e.preventDefault()
     if (!isLastStep) return next() 
     alert("Successful account Creation")
+    console.log(data)
   }
 
   return (<div style={{
@@ -99,7 +101,7 @@ function App() {
 }
 
 export default App
-function useState(INITIAL_DATA: FormData): [any, any] {
-  throw new Error("Function not implemented.")
-}
+
+
+
 
